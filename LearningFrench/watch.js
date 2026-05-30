@@ -28,9 +28,6 @@ async function loadMedia() {
     const url = publicData.publicUrl;
 
     const card = document.createElement("div");
-    card.style.border = "1px solid black";
-    card.style.padding = "15px";
-    card.style.marginBottom = "20px";
 
     const title = document.createElement("h2");
     title.textContent = item.title;
@@ -47,24 +44,36 @@ async function loadMedia() {
 
     if (item.file_type.startsWith("video/")) {
       const video = document.createElement("video");
+
       video.src = url;
       video.controls = true;
+      video.preload = "metadata";
+
       video.style.width = "100%";
-      video.style.maxWidth = "700px";
+      video.style.maxWidth = "1080px";
+      video.style.aspectRatio = "16 / 9";
+      video.style.objectFit = "contain";
+      video.style.background = "black";
+      video.style.borderRadius = "18px";
+
       card.appendChild(video);
     }
 
     if (item.file_type.startsWith("audio/")) {
       const audio = document.createElement("audio");
+
       audio.src = url;
       audio.controls = true;
+      audio.preload = "metadata";
+      audio.style.width = "100%";
+
       card.appendChild(audio);
     }
 
     const link = document.createElement("p");
     link.innerHTML = `<a href="${url}" target="_blank">Open file</a>`;
-    card.appendChild(link);
 
+    card.appendChild(link);
     container.appendChild(card);
   });
 }

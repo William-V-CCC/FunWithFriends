@@ -2,25 +2,32 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   color: #241b2f;
+
   background:
     radial-gradient(circle at top left, #f7d7ff 0, transparent 32%),
     linear-gradient(135deg, #fff7ed, #eef2ff 55%, #fdf2f8);
+
+  background-attachment: fixed;
 }
 
 .page {
-  width: min(1000px, calc(100% - 32px));
+  width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 48px 0;
+  padding: 48px 0 80px;
 }
 
 .hero {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 36px;
 }
 
 .eyebrow {
@@ -34,14 +41,15 @@ body {
 
 h1 {
   margin: 0;
-  font-size: clamp(36px, 7vw, 72px);
+  font-size: clamp(42px, 7vw, 84px);
   line-height: 0.95;
 }
 
 .subtitle {
-  margin: 16px auto 0;
-  max-width: 560px;
+  margin: 18px auto 0;
+  max-width: 640px;
   font-size: 18px;
+  line-height: 1.6;
   color: #5b5168;
 }
 
@@ -56,15 +64,16 @@ h1 {
 .formCard {
   display: grid;
   gap: 18px;
-  max-width: 620px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 28px;
+  padding: 30px;
 }
 
 label {
   display: grid;
   gap: 8px;
   font-weight: 800;
+  color: #3a2c48;
 }
 
 input,
@@ -77,10 +86,11 @@ textarea {
   color: #241b2f;
   background: white;
   outline: none;
+  transition: border-color 0.2s ease;
 }
 
 textarea {
-  min-height: 130px;
+  min-height: 140px;
   resize: vertical;
 }
 
@@ -101,22 +111,42 @@ button,
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  min-height: 48px;
+
+  min-height: 52px;
+
   border: 0;
   border-radius: 999px;
-  padding: 0 24px;
+
+  padding: 0 26px;
+
   font-size: 16px;
   font-weight: 900;
+
   text-decoration: none;
+
   color: white;
-  background: linear-gradient(135deg, #7c3aed, #ec4899);
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #ec4899
+    );
+
   cursor: pointer;
-  box-shadow: 0 12px 28px rgba(124, 58, 237, 0.26);
+
+  box-shadow:
+    0 12px 28px rgba(124, 58, 237, 0.26);
+
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
 }
 
 button:hover,
 .watchLink:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  opacity: 0.96;
 }
 
 .status {
@@ -134,62 +164,137 @@ button:hover,
 .topActions {
   display: flex;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .mediaGrid {
   display: grid;
-  gap: 22px;
+  gap: 28px;
 }
 
 .mediaGrid > div {
-  background: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.88);
+
   border: 2px solid rgba(36, 27, 47, 0.12);
-  border-radius: 28px;
-  padding: 22px;
-  box-shadow: 0 18px 50px rgba(48, 33, 72, 0.14);
+
+  border-radius: 32px;
+
+  padding: 26px;
+
+  box-shadow:
+    0 18px 50px rgba(48, 33, 72, 0.14);
+
+  overflow: hidden;
 }
 
 .mediaGrid h2 {
-  margin: 0 0 6px;
-  font-size: 28px;
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.1;
 }
 
 .mediaGrid p {
   color: #5b5168;
-  line-height: 1.5;
+  line-height: 1.7;
+  word-break: break-word;
 }
 
 video,
 audio {
   width: 100%;
-  margin-top: 12px;
-  border-radius: 18px;
+  margin-top: 18px;
+  border-radius: 20px;
 }
 
 video {
-  max-height: 520px;
+  width: 100%;
+  max-width: 1080px;
+
+  aspect-ratio: 16 / 9;
+
+  object-fit: contain;
+
   background: black;
+
+  display: block;
+
+  margin-inline: auto;
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+audio {
+  margin-top: 20px;
 }
 
 a {
   color: #7c3aed;
   font-weight: 800;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.4);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .page {
+    width: min(100% - 22px, 1200px);
+  }
+
+  .mediaGrid > div {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .mediaGrid h2 {
+    font-size: 26px;
+  }
 }
 
 @media (max-width: 600px) {
   .page {
-    width: min(100% - 20px, 1000px);
-    padding: 28px 0;
+    padding: 26px 0 50px;
   }
 
-  .formCard,
+  h1 {
+    line-height: 1;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .formCard {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
   .mediaGrid > div {
     padding: 18px;
     border-radius: 22px;
   }
 
-  .subtitle {
-    font-size: 16px;
+  video {
+    border-radius: 16px;
+  }
+
+  button,
+  .watchLink {
+    width: 100%;
   }
 }
