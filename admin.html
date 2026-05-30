@@ -2,58 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Upload | Learning French</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/tus-js-client@4/dist/tus.min.js"></script>
 
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
-<script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+  <title>
+    Admin Upload | Learning French
+  </title>
 
-<script src="admin.js"></script>
+  <link
+    rel="stylesheet"
+    href="style.css"
+  />
 </head>
 
 <body>
   <main class="page">
     <section class="hero">
-      <p class="eyebrow">Private archive</p>
-      <h1>Learning French Upload</h1>
-      <p class="subtitle">Upload long video or audio files with progress tracking.</p>
+      <p class="eyebrow">
+        Private archive
+      </p>
+
+      <h1>
+        Learning French Upload
+      </h1>
+
+      <p class="subtitle">
+        Upload long video or audio files
+        with progress tracking.
+      </p>
     </section>
 
     <section class="card formCard">
       <label>
         Title
-        <input id="title" placeholder="French chaos, lesson one" />
+
+        <input
+          id="title"
+          placeholder="French chaos, lesson one"
+        />
       </label>
 
       <label>
         Description
-        <textarea id="description" placeholder="Describe this masterpiece."></textarea>
+
+        <textarea
+          id="description"
+          placeholder="Describe this masterpiece."
+        ></textarea>
       </label>
 
       <label class="fileBox">
-        <span>Choose video or audio</span>
-        <input id="fileInput" type="file" accept="audio/*,video/*" />
+        <span>
+          Choose video or audio
+        </span>
+
+        <input
+          id="fileInput"
+          type="file"
+          accept="audio/*,video/*"
+        />
       </label>
 
       <div class="progressWrap">
         <div class="progressBar">
-          <div id="progressFill" class="progressFill"></div>
+          <div
+            id="progressFill"
+            class="progressFill"
+          ></div>
         </div>
-        <p id="progressText">0%</p>
+
+        <p id="progressText">
+          0%
+        </p>
       </div>
 
-      <button onclick="uploadMedia()">Upload Media</button>
+      <button onclick="uploadMedia()">
+        Upload Media
+      </button>
 
-      <p id="status" class="status"></p>
+      <p
+        id="status"
+        class="status"
+      ></p>
     </section>
 
-    <a class="watchLink" href="index.html">View archive</a>
+    <a
+      class="watchLink"
+      href="index.html"
+    >
+      View archive
+    </a>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4/dist/tus.min.js"></script>
+
   <script src="admin.js"></script>
 </body>
 </html>
