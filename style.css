@@ -1,0 +1,300 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #241b2f;
+
+  background:
+    radial-gradient(circle at top left, #f7d7ff 0, transparent 32%),
+    linear-gradient(135deg, #fff7ed, #eef2ff 55%, #fdf2f8);
+
+  background-attachment: fixed;
+}
+
+.page {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7c3aed;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(42px, 7vw, 84px);
+  line-height: 0.95;
+}
+
+.subtitle {
+  margin: 18px auto 0;
+  max-width: 640px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #5b5168;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.82);
+  border: 2px solid rgba(36, 27, 47, 0.12);
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(48, 33, 72, 0.16);
+  backdrop-filter: blur(12px);
+}
+
+.formCard {
+  display: grid;
+  gap: 18px;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  font-weight: 800;
+  color: #3a2c48;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 2px solid #e8def8;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 16px;
+  color: #241b2f;
+  background: white;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #8b5cf6;
+}
+
+.fileBox {
+  padding: 18px;
+  border: 2px dashed #a78bfa;
+  border-radius: 20px;
+  background: #faf5ff;
+}
+
+button,
+.watchLink {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 52px;
+
+  border: 0;
+  border-radius: 999px;
+
+  padding: 0 26px;
+
+  font-size: 16px;
+  font-weight: 900;
+
+  text-decoration: none;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #ec4899
+    );
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 28px rgba(124, 58, 237, 0.26);
+
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+
+button:hover,
+.watchLink:hover {
+  transform: translateY(-2px);
+  opacity: 0.96;
+}
+
+.status {
+  min-height: 24px;
+  margin: 0;
+  font-weight: 700;
+  color: #5b5168;
+}
+
+.watchLink {
+  width: fit-content;
+  margin: 22px auto 0;
+}
+
+.topActions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.mediaGrid {
+  display: grid;
+  gap: 28px;
+}
+
+.mediaGrid > div {
+  background: rgba(255, 255, 255, 0.88);
+
+  border: 2px solid rgba(36, 27, 47, 0.12);
+
+  border-radius: 32px;
+
+  padding: 26px;
+
+  box-shadow:
+    0 18px 50px rgba(48, 33, 72, 0.14);
+
+  overflow: hidden;
+}
+
+.mediaGrid h2 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.mediaGrid p {
+  color: #5b5168;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+video,
+audio {
+  width: 100%;
+  margin-top: 18px;
+  border-radius: 20px;
+}
+
+video {
+  width: 100%;
+  max-width: 1080px;
+
+  aspect-ratio: 16 / 9;
+
+  object-fit: contain;
+
+  background: black;
+
+  display: block;
+
+  margin-inline: auto;
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+audio {
+  margin-top: 20px;
+}
+
+a {
+  color: #7c3aed;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.4);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .page {
+    width: min(100% - 22px, 1200px);
+  }
+
+  .mediaGrid > div {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .mediaGrid h2 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 26px 0 50px;
+  }
+
+  h1 {
+    line-height: 1;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .formCard {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .mediaGrid > div {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  video {
+    border-radius: 16px;
+  }
+
+  button,
+  .watchLink {
+    width: 100%;
+  }
+}
