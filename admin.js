@@ -1,10 +1,13 @@
 const SUPABASE_URL = "https://snueglhkazvacwzjoool.supabase.co";
+const SUPABASE_STORAGE_URL = "https://snueglhkazvacwzjoool.storage.supabase.co";
 const SUPABASE_KEY = "sb_publishable_xYKfFhPcrVL5AfHTYmEkeQ_KHrRb7I2";
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const BUCKET = "media";
 const TABLE = "media_items";
+
+let ffmpegInstance = null;
 
 function cleanFileName(name) {
   return name
@@ -30,14 +33,95 @@ function setProgress(percent) {
   const fill = document.getElementById("progressFill");
   const text = document.getElementById("progressText");
 
+  if (!fill || !text) return;
+
   fill.style.width = `${percent}%`;
   text.textContent = `${percent}%`;
+}
+
+function isSizeLimitError(error) {
+  const message = String(error?.message || error || "").toLowerCase();
+
+  return (
+    message.includes("maximum size exceeded") ||
+    message.includes("413") ||
+    message.includes("payload too large")
+  );
+}
+
+async function loadFFmpeg(status) {
+  if (ffmpegInstance) return ffmpegInstance;
+
+  status.textContent = "Loading audio converter...";
+
+  const { FFmpeg } = FFmpegWASM;
+  const { toBlobURL } = FFmpegUtil;
+
+  const ffmpeg = new FFmpeg();
+
+  await ffmpeg.load({
+    coreURL: await toBlobURL(
+      "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js",
+      "text/javascript"
+    ),
+    wasmURL: await toBlobURL(
+      "https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm",
+      "application/wasm"
+    )
+  });
+
+  ffmpegInstance = ffmpeg;
+  return ffmpeg;
+}
+
+async function convertToMp3(file, status) {
+  const ffmpeg = await loadFFmpeg(status);
+
+  const inputName = `input-${crypto.randomUUID()}.${file.name.split(".").pop() || "mp4"}`;
+  const outputName = `audio-${crypto.randomUUID()}.mp3`;
+
+  status.textContent = "Converting video to MP3 audio only...";
+
+  const fileBuffer = new Uint8Array(await file.arrayBuffer());
+
+  await ffmpeg.writeFile(inputName, fileBuffer);
+
+  await ffmpeg.exec([
+    "-i",
+    inputName,
+
+    "-vn",
+
+    "-ac",
+    "1",
+
+    "-ar",
+    "22050",
+
+    "-b:a",
+    "64k",
+
+    outputName
+  ]);
+
+  const mp3Data = await ffmpeg.readFile(outputName);
+
+  await ffmpeg.deleteFile(inputName);
+  await ffmpeg.deleteFile(outputName);
+
+  return new File(
+    [mp3Data.buffer],
+    `${cleanFileName(file.name).replace(/\.[^/.]+$/, "")}-audio-only.mp3`,
+    {
+      type: "audio/mpeg"
+    }
+  );
 }
 
 function uploadWithProgress(file, filePath, status) {
   return new Promise((resolve, reject) => {
     const upload = new tus.Upload(file, {
-      endpoint: `${SUPABASE_URL}/storage/v1/upload/resumable`,
+      endpoint: `${SUPABASE_STORAGE_URL}/storage/v1/upload/resumable`,
 
       headers: {
         authorization: `Bearer ${SUPABASE_KEY}`,
@@ -46,14 +130,7 @@ function uploadWithProgress(file, filePath, status) {
 
       chunkSize: 6 * 1024 * 1024,
 
-      retryDelays: [
-        0,
-        1000,
-        3000,
-        5000,
-        10000,
-        20000
-      ],
+      retryDelays: [0, 1000, 3000, 5000, 10000, 20000],
 
       uploadDataDuringCreation: true,
       removeFingerprintOnSuccess: true,
@@ -95,6 +172,35 @@ function uploadWithProgress(file, filePath, status) {
   });
 }
 
+async function saveMediaRecord({ title, description, filePath, fileType }) {
+  const { error } = await client.from(TABLE).insert({
+    title,
+    description,
+    file_path: filePath,
+    file_type: fileType
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function uploadFileAndRecord({ file, title, description, status }) {
+  const safeName = cleanFileName(file.name);
+  const filePath = `${crypto.randomUUID()}-${safeName}`;
+
+  await uploadWithProgress(file, filePath, status);
+
+  status.textContent = "Saving media details...";
+
+  await saveMediaRecord({
+    title,
+    description,
+    filePath,
+    fileType: file.type || "application/octet-stream"
+  });
+}
+
 async function uploadMedia() {
   const titleInput = document.getElementById("title");
   const descriptionInput = document.getElementById("description");
@@ -103,44 +209,61 @@ async function uploadMedia() {
 
   const title = titleInput.value.trim();
   const description = descriptionInput.value.trim();
-  const file = fileInput.files[0];
+  const originalFile = fileInput.files[0];
 
-  if (!title || !file) {
-    status.textContent = "Title and file are required. Computers remain painfully literal.";
+  if (!title || !originalFile) {
+    status.textContent = "Title and file are required. Computers remain painfully needy.";
     return;
   }
 
   setProgress(0);
 
-  const safeName = cleanFileName(file.name);
-  const filePath = `${crypto.randomUUID()}-${safeName}`;
-
   try {
-    status.textContent = `Preparing upload: ${formatBytes(file.size)}`;
+    status.textContent = `Trying full file upload: ${formatBytes(originalFile.size)}`;
 
-    await uploadWithProgress(file, filePath, status);
+    await uploadFileAndRecord({
+      file: originalFile,
+      title,
+      description,
+      status
+    });
 
-    status.textContent = "Saving media details...";
-
-    const { error: dbError } = await client
-      .from(TABLE)
-      .insert({
-        title,
-        description,
-        file_path: filePath,
-        file_type: file.type || "application/octet-stream"
-      });
-
-    if (dbError) {
-      throw new Error(dbError.message);
+    status.textContent = "Uploaded full file successfully.";
+  } catch (error) {
+    if (!isSizeLimitError(error)) {
+      status.textContent = "Upload failed: " + error.message;
+      return;
     }
 
-    status.textContent = "Uploaded successfully.";
+    try {
+      setProgress(0);
 
-    titleInput.value = "";
-    descriptionInput.value = "";
-    fileInput.value = "";
-  } catch (error) {
-    status.textContent = "Upload failed: " + error.message;
+      status.textContent =
+        "Video was too large. Converting to MP3 audio only...";
+
+      const mp3File = await convertToMp3(originalFile, status);
+
+      setProgress(0);
+
+      status.textContent = `Uploading MP3 fallback: ${formatBytes(mp3File.size)}`;
+
+      await uploadFileAndRecord({
+        file: mp3File,
+        title: `${title} Audio Only`,
+        description:
+          description +
+          "\n\nOriginal video was too large, so this was uploaded as MP3 audio only.",
+        status
+      });
+
+      status.textContent = "Uploaded MP3 fallback successfully.";
+    } catch (mp3Error) {
+      status.textContent = "MP3 fallback failed: " + mp3Error.message;
+      return;
+    }
   }
+
+  titleInput.value = "";
+  descriptionInput.value = "";
+  fileInput.value = "";
 }
