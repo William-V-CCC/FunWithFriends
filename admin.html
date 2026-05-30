@@ -10,7 +10,7 @@
     <section class="hero">
       <p class="eyebrow">Private archive</p>
       <h1>Learning French Upload</h1>
-      <p class="subtitle">Add a title, description, and one video or audio file.</p>
+      <p class="subtitle">Upload long video or audio files with progress tracking.</p>
     </section>
 
     <section class="card formCard">
@@ -21,7 +21,7 @@
 
       <label>
         Description
-        <textarea id="description" placeholder="What happened in this masterpiece?"></textarea>
+        <textarea id="description" placeholder="Describe this masterpiece."></textarea>
       </label>
 
       <label class="fileBox">
@@ -29,15 +29,23 @@
         <input id="fileInput" type="file" accept="audio/*,video/*" />
       </label>
 
+      <div class="progressWrap">
+        <div class="progressBar">
+          <div id="progressFill" class="progressFill"></div>
+        </div>
+        <p id="progressText">0%</p>
+      </div>
+
       <button onclick="uploadMedia()">Upload Media</button>
 
       <p id="status" class="status"></p>
     </section>
 
-    <a class="watchLink" href="index.html">View archive</a>
+    <a class="watchLink" href="watch.html">View archive</a>
   </main>
-</body>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="admin.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4/dist/tus.min.js"></script>
+  <script src="admin.js"></script>
+</body>
 </html>
