@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Upload | Learning French</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">Private archive</p>
+      <h1>Learning French Upload</h1>
+      <p class="subtitle">Add a title, description, and one video or audio file.</p>
+    </section>
+
+    <section class="card formCard">
+      <label>
+        Title
+        <input id="title" placeholder="French chaos, lesson one" />
+      </label>
+
+      <label>
+        Description
+        <textarea id="description" placeholder="What happened in this masterpiece?"></textarea>
+      </label>
+
+      <label class="fileBox">
+        <span>Choose video or audio</span>
+        <input id="fileInput" type="file" accept="audio/*,video/*" />
+      </label>
+
+      <button onclick="uploadMedia()">Upload Media</button>
+
+      <p id="status" class="status"></p>
+    </section>
+
+    <a class="watchLink" href="watch.html">View archive</a>
+  </main>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="admin.js"></script>
+</html>
