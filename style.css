@@ -10,11 +10,13 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
-  color: #241b2f;
+  color: #f5f3ff;
 
   background:
-    radial-gradient(circle at top left, #f7d7ff 0, transparent 32%),
-    linear-gradient(135deg, #fff7ed, #eef2ff 55%, #fdf2f8);
+    radial-gradient(circle at top left, rgba(168, 85, 247, 0.45), transparent 34%),
+    radial-gradient(circle at top right, rgba(236, 72, 153, 0.28), transparent 32%),
+    radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.35), transparent 38%),
+    linear-gradient(135deg, #05030a 0%, #10051f 45%, #020106 100%);
 
   background-attachment: fixed;
 }
@@ -36,13 +38,15 @@ body {
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #7c3aed;
+  color: #c084fc;
 }
 
 h1 {
   margin: 0;
   font-size: clamp(42px, 7vw, 84px);
   line-height: 0.95;
+  color: #ffffff;
+  text-shadow: 0 0 34px rgba(168, 85, 247, 0.45);
 }
 
 .subtitle {
@@ -50,15 +54,21 @@ h1 {
   max-width: 640px;
   font-size: 18px;
   line-height: 1.6;
-  color: #5b5168;
+  color: #c4b5fd;
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.82);
-  border: 2px solid rgba(36, 27, 47, 0.12);
-  border-radius: 28px;
-  box-shadow: 0 24px 70px rgba(48, 33, 72, 0.16);
-  backdrop-filter: blur(12px);
+.card,
+.mediaGrid > div {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(216, 180, 254, 0.22);
+  border-radius: 32px;
+
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .formCard {
@@ -73,20 +83,25 @@ label {
   display: grid;
   gap: 8px;
   font-weight: 800;
-  color: #3a2c48;
+  color: #ede9fe;
 }
 
 input,
 textarea {
   width: 100%;
-  border: 2px solid #e8def8;
+  border: 1px solid rgba(216, 180, 254, 0.28);
   border-radius: 16px;
   padding: 14px 16px;
   font-size: 16px;
-  color: #241b2f;
-  background: white;
+  color: #ffffff;
+  background: rgba(10, 6, 20, 0.72);
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(221, 214, 254, 0.55);
 }
 
 textarea {
@@ -96,14 +111,15 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: #8b5cf6;
+  border-color: #c084fc;
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.18);
 }
 
 .fileBox {
   padding: 18px;
-  border: 2px dashed #a78bfa;
+  border: 1px dashed rgba(216, 180, 254, 0.55);
   border-radius: 20px;
-  background: #faf5ff;
+  background: rgba(88, 28, 135, 0.22);
 }
 
 button,
@@ -113,47 +129,43 @@ button,
   align-items: center;
 
   min-height: 52px;
-
   border: 0;
   border-radius: 999px;
-
   padding: 0 26px;
 
   font-size: 16px;
   font-weight: 900;
-
   text-decoration: none;
 
   color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #7c3aed,
-      #ec4899
-    );
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
 
   cursor: pointer;
 
   box-shadow:
-    0 12px 28px rgba(124, 58, 237, 0.26);
+    0 14px 34px rgba(168, 85, 247, 0.34),
+    0 0 30px rgba(236, 72, 153, 0.18);
 
   transition:
     transform 0.18s ease,
-    opacity 0.18s ease;
+    opacity 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 button:hover,
 .watchLink:hover {
   transform: translateY(-2px);
   opacity: 0.96;
+  box-shadow:
+    0 18px 42px rgba(168, 85, 247, 0.45),
+    0 0 38px rgba(236, 72, 153, 0.28);
 }
 
 .status {
   min-height: 24px;
   margin: 0;
   font-weight: 700;
-  color: #5b5168;
+  color: #c4b5fd;
 }
 
 .watchLink {
@@ -173,17 +185,7 @@ button:hover,
 }
 
 .mediaGrid > div {
-  background: rgba(255, 255, 255, 0.88);
-
-  border: 2px solid rgba(36, 27, 47, 0.12);
-
-  border-radius: 32px;
-
   padding: 26px;
-
-  box-shadow:
-    0 18px 50px rgba(48, 33, 72, 0.14);
-
   overflow: hidden;
 }
 
@@ -191,10 +193,11 @@ button:hover,
   margin: 0 0 8px;
   font-size: 32px;
   line-height: 1.1;
+  color: #ffffff;
 }
 
 .mediaGrid p {
-  color: #5b5168;
+  color: #c4b5fd;
   line-height: 1.7;
   word-break: break-word;
 }
@@ -209,19 +212,14 @@ audio {
 video {
   width: 100%;
   max-width: 1080px;
-
   aspect-ratio: 16 / 9;
-
   object-fit: contain;
-
   background: black;
-
   display: block;
-
   margin-inline: auto;
 
   box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.22);
+    0 22px 60px rgba(0, 0, 0, 0.55);
 }
 
 audio {
@@ -229,13 +227,43 @@ audio {
 }
 
 a {
-  color: #7c3aed;
+  color: #d8b4fe;
   font-weight: 800;
   text-decoration: none;
 }
 
 a:hover {
+  color: #f0abfc;
   text-decoration: underline;
+}
+
+.progressWrap {
+  display: grid;
+  gap: 8px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 18px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(216, 180, 254, 0.18);
+  border: 1px solid rgba(216, 180, 254, 0.22);
+}
+
+.progressFill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  box-shadow: 0 0 22px rgba(236, 72, 153, 0.45);
+  transition: width 0.2s ease;
+}
+
+#progressText {
+  margin: 0;
+  font-weight: 900;
+  color: #ddd6fe;
 }
 
 ::-webkit-scrollbar {
@@ -243,12 +271,12 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(124, 58, 237, 0.4);
+  background: rgba(168, 85, 247, 0.55);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #05030a;
 }
 
 @media (max-width: 900px) {
@@ -297,30 +325,4 @@ a:hover {
   .watchLink {
     width: 100%;
   }
-}
-.progressWrap {
-  display: grid;
-  gap: 8px;
-}
-
-.progressBar {
-  width: 100%;
-  height: 18px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: #e8def8;
-}
-
-.progressFill {
-  width: 0%;
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #7c3aed, #ec4899);
-  transition: width 0.2s ease;
-}
-
-#progressText {
-  margin: 0;
-  font-weight: 900;
-  color: #5b5168;
 }
